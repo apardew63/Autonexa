@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Lato, Montserrat } from 'next/font/google';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const lato = Lato({ 
+  subsets: ['latin'], 
+  weight: ['400', '700'],
+  variable: '--font-lato' // Add variable for CSS custom property
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const montserrat = Montserrat({ 
+  subsets: ['latin'], 
+  weight: ['400', '700'],
+  variable: '--font-montserrat'
 });
 
 export const metadata: Metadata = {
@@ -24,9 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${lato.variable} ${montserrat.variable} antialiased font-lato`}>
         {children}
       </body>
     </html>

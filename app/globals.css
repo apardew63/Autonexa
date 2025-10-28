@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #0b0b0b;
   --foreground: #171717;
 }
 
@@ -14,13 +14,80 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #0b0b0b;
     --foreground: #ededed;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0b0b0b;
+  font-family: "Lato", sans-serif;
 }
+
+/* small utility for card image zoom while excluding buttons */
+.card-img-zoom img {
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.card-img-zoom:hover img {
+  transform: scale(1.06);
+}
+.card-img-zoom:hover .no-zoom {
+  transform: none !important;
+}
+
+.click-btn {
+  display: flex;
+  width: 180px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  line-height: 35px;
+  border: 1px solid;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 16px;
+  background-color: white;
+  color: #111111;
+  text-decoration: none;
+  transition: all 0.35s;
+  box-sizing: border-box;
+}
+
+/* === Button Style 5 === */
+.btn-style5 {
+  border-color: #979695;
+  color: #979695;
+}
+
+.btn-style5:hover {
+  box-shadow: 0.3em 0.3em 0 #998626;
+
+  background-color: #ffd700;
+  border-color: #ffd700;
+  color: #111111;
+}
+
+/* ==== Swiper Custom Styles ==== */
+
+/* Arrows (Next / Prev) */
+.custom-swiper .swiper-button-next,
+.custom-swiper .swiper-button-prev {
+  color: #ffd700 !important; /* gold color */
+  transition: color 0.3s ease;
+}
+
+.custom-swiper .swiper-button-next:hover,
+.custom-swiper .swiper-button-prev:hover {
+  color: #ffffff !important; /* white on hover */
+}
+
+/* Pagination Dots */
+/* .custom-swiper .swiper-pagination-bullet {
+  background-color: #555 !important;
+  opacity: 1 !important;
+  transition: background-color 0.3s ease;
+} */
+
+/* .custom-swiper .swiper-pagination-bullet-active {
+  background-color: #ffd700 !important; 
+} */
