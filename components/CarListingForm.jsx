@@ -60,7 +60,7 @@ const CarListingForm = ({ userId, showroomId = "" }) => {
       onSubmit={handleSubmit}
       className="max-w-md mx-auto bg-white p-6 shadow-md rounded-lg space-y-4"
     >
-      <h2 className="text-xl font-semibold mb-4">Add New Car</h2>
+      <h2 className="text-xl font-semibold mb-4">Add dNew Car</h2>
 
       <input
         type="text"
