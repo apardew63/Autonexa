@@ -32,7 +32,7 @@ const Card = ({ img, title, desc }) => {
             className="
               font-bold text-[#111] text-[28px] font-montserrat 
               transition-all duration-500 ease-out
-              group-hover:text-[34px]
+              group-hover:text-[36px]
             "
           >
             {title}
@@ -40,7 +40,7 @@ const Card = ({ img, title, desc }) => {
 
           <p
             className="
-              text-[#111] text-[16px] mt-2 font-lato opacity-80
+              text-[#111] text-[16px] font-lato opacity-80
               transition-all duration-500 ease-out
               group-hover:text-[24px] group-hover:opacity-100 
               max-w-[400px]

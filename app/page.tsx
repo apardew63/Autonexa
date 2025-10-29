@@ -1,4 +1,3 @@
-import Header from "../components/Header";
 import Hero from "../components/Hero";
 import About from "../components/About";
 import NewSellingCars from "../components/NewSellingCars";
@@ -7,15 +6,14 @@ import ExclusiveAuction from "../components/ExclusiveAuction";
 import SearchByBodyType from "../components/SearchByBodyType";
 import Testimonials from "../components/Testimonials";
 import LatestNews from "../components/LatestNews";
-import Footer from "../components/Footer";
 import CounterSection from '../components/CounterSection'
 import Button from "../components/Button";
 import { FiArrowRight } from "react-icons/fi";
+import Link from "next/link";
 
 export default function Page() {
   return (
     <div>
-      <Header />
       <div
         className="relative"
         style={{
@@ -26,7 +24,7 @@ export default function Page() {
       >
         <Hero />
       </div>
-      <main>
+      <div>
         <img src="/images/about.png" className="mt-[80px]" />
         <About />
 
@@ -59,9 +57,11 @@ export default function Page() {
                     className="flex-1 px-3 sm:px-4 py-2 sm:py-3 text-gray-700 focus:outline-none text-sm sm:text-base"
                   />
                   <div className="p-1">
-                    <button className="flex items-center gap-2 bg-[#fff] border border-[#000] hover:bg-[#FFD700] text-black font-semibold px-4 sm:px-5 py-2 sm:py-3 transition-colors text-sm sm:text-base">
-                      View All <FiArrowRight size={18} className="sm:w-5 sm:h-5" />
-                    </button>
+                    <Link href="/auction">
+                      <button className="flex items-center gap-2 bg-[#fff] border border-[#000] hover:bg-[#FFD700] text-black font-semibold px-4 sm:px-5 py-2 sm:py-3 transition-colors text-sm sm:text-base">
+                        View All <FiArrowRight size={18} className="sm:w-5 sm:h-5" />
+                      </button>
+                    </Link>
                   </div>
                 </div>
 
@@ -81,8 +81,7 @@ export default function Page() {
         <div className="max-w-[1520px] mx-auto px-6">
           <LatestNews />
         </div>
-      </main>
-      <Footer />
+      </div>
     </div>
   );
 }

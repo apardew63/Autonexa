@@ -2,6 +2,7 @@
 import React from "react";
 import Button from "../components/Button";
 import { FiArrowRight } from "react-icons/fi";
+import Link from "next/link";
 import SellingCard from "./SellingCard";
 
 const cars = [
@@ -17,12 +18,14 @@ export default function NewSellingCars() {
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-4">
         <h2 className="text-[24px] sm:text-[32px] md:text-[40px] lg:text-[50px] font-bold text-white">Now Selling Cars</h2>
-        <Button
-                      text="View All"
-                      Icon={FiArrowRight}
-                      className="bg-white text-black hover:bg-gray-100"
-                      onClick={() => alert("Let's go!")}
-                    />
+        <Link href="/auction">
+          <Button
+            text="View All"
+            Icon={FiArrowRight}
+            className="bg-white text-black hover:bg-gray-100"
+            onClick={() => {}}
+          />
+        </Link>
       </div>
 
       {/* Cards */}

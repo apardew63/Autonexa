@@ -5,7 +5,7 @@ import Button from "./Button";
 
 const SellingCard = ({ img, title, desc, model }) => {
   return (
-    <div className="relative rounded-lg overflow-hidden h-[600px] cursor-pointer group">
+    <div className="relative rounded-lg overflow-hidden h-[600px] max-sm:h-[400px] cursor-pointer group">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-130"
@@ -20,7 +20,7 @@ const SellingCard = ({ img, title, desc, model }) => {
         className="
           absolute bottom-0 left-0 right-0 z-10 m-6
           bg-white/85 backdrop-blur-md rounded-lg p-4
-          w-[300px] h-[120px] max-sm:w-auto max-sm:h-auto overflow-hidden
+          w-[300px] h-[110px] max-sm:w-auto max-sm:h-auto overflow-hidden
           flex flex-col justify-between
           transform origin-top-left 
           transition-all duration-500 ease-out
@@ -32,7 +32,7 @@ const SellingCard = ({ img, title, desc, model }) => {
             className="
               font-bold text-[#111] text-[28px] font-montserrat 
               transition-all duration-500 ease-out
-              group-hover:text-[34px]
+              group-hover:text-[33px]
             "
           >
             {title}
@@ -42,7 +42,7 @@ const SellingCard = ({ img, title, desc, model }) => {
             className="
               text-[#000] text-[16px] font-bold font-lato opacity-90
               transition-all duration-500 ease-out
-              group-hover:text-[16px]
+              group-hover:text-[24px]
             "
           >
             {desc}
@@ -59,7 +59,6 @@ const SellingCard = ({ img, title, desc, model }) => {
           </p>
         </div>
 
-        {/* Button (Hidden initially, appears on hover) */}
         <div
           className="
             opacity-0 translate-y-6 
@@ -71,7 +70,7 @@ const SellingCard = ({ img, title, desc, model }) => {
             text="Get Started"
             Icon={FiArrowRight}
             className="bg-white text-black hover:bg-gray-100"
-            onClick={() => alert('Let\'s go!')}
+            onClick={() => alert("Let's go!")}
           />
         </div>
       </div>

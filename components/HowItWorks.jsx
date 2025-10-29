@@ -2,7 +2,7 @@
 import React from "react";
 
 const Item = ({ imgsrc, title, desc }) => (
-  <div className="flex flex-col items-center text-center p-4 sm:p-6 md:p-8 w-full max-w-[300px] sm:max-w-[350px] md:max-w-[400px] h-auto sm:h-[350px] md:h-[400px]">
+  <div className="flex flex-col items-center text-center p-4 w-full max-w-[300px] sm:max-w-[350px] md:max-w-[400px] h-auto sm:h-[350px] md:h-[400px]">
     <div className="w-[100px] sm:w-[120px] md:w-[140px] h-[100px] sm:h-[120px] md:h-[140px] mb-4 sm:mb-6 flex items-center justify-center">
       <img src={imgsrc} alt={title} className="w-full h-full object-contain" />
     </div>
@@ -25,7 +25,7 @@ export default function HowItWorks() {
           <img src="/images/arr2.png" className="w-full max-w-[320px] md:max-w-[420px]" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 md:gap-16 lg:gap-20 place-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-102 md:gap-16 lg:gap-50 place-items-center">
           <Item
             imgsrc="/images/how3.png"
             title="Join Auctions"
@@ -45,7 +45,7 @@ export default function HowItWorks() {
           />
         </div>
 
-        <div className="hidden sm:block ml-20 md:ml-32 lg:ml-40 xl:ml-48">
+        <div className="hidden sm:block ml-20 md:ml-32 lg:ml-40 xl:ml-150">
           <img src="/images/arr1.png" className="w-full max-w-[320px] md:max-w-[420px]" />
         </div>
       </div>
