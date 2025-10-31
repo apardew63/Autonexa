@@ -433,7 +433,7 @@ const DealerDashboard = () => {
                   fetchDashboardData();
                   toast.success("Showroom updated successfully!");
                 }}
-                onError={(error) => {
+                onError={(error: { message?: string }) => {
                   toast.error(error.message || "Failed to update showroom");
                 }}
               />
