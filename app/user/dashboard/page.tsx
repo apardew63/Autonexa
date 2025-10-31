@@ -23,7 +23,11 @@ const UserDashboard = () => {
             >
               Back to Dashboard
             </button>
-            <CarListingForm userId="user-id-placeholder" />
+            <CarListingForm
+              userId="user-id-placeholder"
+              onSuccess={() => setShowForm(false)}
+              onError={(error: { message?: string }) => console.error("Error:", error)}
+            />
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
