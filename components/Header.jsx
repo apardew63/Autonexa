@@ -29,7 +29,6 @@ export default function Header() {
         {/* Center Column - Navbar */}
         <nav className="hidden md:flex justify-center gap-4 lg:gap-6 xl:gap-10 text-[16px] lg:text-[18px] xl:text-[22px] text-white items-center font-normal">
           <Link href="/" className="hover:underline cursor-pointer">Home</Link>
-          <Link href="/about" className="hover:underline cursor-pointer">About</Link>
           <Link href="/auction" className="hover:underline cursor-pointer">Auctions</Link>
           <Link href="/contact" className="hover:underline cursor-pointer">Contact</Link>
         </nav>
@@ -68,25 +67,11 @@ export default function Header() {
                 Home
               </Link>
               <Link
-                href="/about"
-                className="text-white hover:text-yellow-400 transition-colors text-lg font-medium py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link
                 href="/auction"
                 className="text-white hover:text-yellow-400 transition-colors text-lg font-medium py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Auctions
-              </Link>
-              <Link
-                href="/contact"
-                className="text-white hover:text-yellow-400 transition-colors text-lg font-medium py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contact
               </Link>
               <Link
                 href="/contact"

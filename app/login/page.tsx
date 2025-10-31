@@ -43,39 +43,64 @@ const LoginForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto bg-white p-6 shadow-md rounded-lg space-y-4"
-    >
-      <h2 className="text-xl font-semibold mb-4">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-sm bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-light text-gray-900 mb-2">Welcome Back</h2>
+          <p className="text-sm text-gray-600">Sign in to your account</p>
+        </div>
 
-      <input
-        type="email"
-        name="email"
-        placeholder="Email Address"
-        value={formData.email}
-        onChange={handleChange}
-        className="w-full border p-2 rounded"
-        required
-      />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition duration-200"
+              required
+            />
+          </div>
 
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={handleChange}
-        className="w-full border p-2 rounded"
-        required
-      />
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition duration-200"
+              required
+            />
+          </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-      >
-        Login
-      </button>
-    </form>
+          <button
+            type="submit"
+            className="w-full bg-gray-900 text-white py-2.5 rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200 font-medium"
+          >
+            Sign In
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            Don&apos;t have an account?{' '}
+            <a href="/signup" className="text-gray-900 hover:text-gray-700 font-medium">
+              Sign up
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
 

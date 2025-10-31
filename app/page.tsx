@@ -21,7 +21,7 @@ export default function Page() {
       <div
         className="relative"
         style={{
-          backgroundImage: "url(/images/hero.png)",
+          backgroundImage: "url(/images/hero.mp4)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
