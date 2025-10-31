@@ -187,7 +187,7 @@ const AccountSettingsPage = () => {
                         />
                       ) : user?.profileImage ? (
                         <img
-                          src={`http://localhost:5000${user.profileImage}`}
+                          src={`https://autonexa-server.vercel.app${user.profileImage}`}
                           alt="Profile"
                           className="w-full h-full object-cover"
                         />
