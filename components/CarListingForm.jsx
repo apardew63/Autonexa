@@ -37,7 +37,7 @@ const CarListingForm = ({ userId, onSuccess, onError }) => {
         return;
       }
 
-      const res = await fetch("http://localhost:5000/api/listings", {
+      const res = await fetch("https://autonexa-server.vercel.app/api/listings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

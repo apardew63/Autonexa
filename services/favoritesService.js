@@ -1,5 +1,5 @@
 // API calls for favorites functionality
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://autonexa.vercel.app/api';
 
 export const favoritesAPI = {
   // Add listing to favorites

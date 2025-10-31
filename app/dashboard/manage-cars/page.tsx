@@ -53,7 +53,7 @@ const ManageCarsPage = () => {
   const fetchCars = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/listings/me", {
+      const response = await fetch("https://autonexa.vercel.app/api/listings/me", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -102,7 +102,7 @@ const ManageCarsPage = () => {
   const handleDelete = async (id: string) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/listings/${id}`, {
+      const response = await fetch(`https://autonexa.vercel.app/api/listings/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,

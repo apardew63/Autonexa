@@ -94,7 +94,7 @@ const AccountSettingsPage = () => {
         formDataToSend.append("profileImage", profileData.profileImage);
       }
 
-      const response = await fetch("http://localhost:5000/api/user/profile", {
+      const response = await fetch("https://autonexa.vercel.app/api/user/profile", {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,

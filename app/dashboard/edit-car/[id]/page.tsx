@@ -57,7 +57,7 @@ const EditCarPage = () => {
   const fetchCar = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/listings/${carId}`, {
+      const response = await fetch(`https://autonexa-server.vercel.app/api/listings/${carId}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -165,7 +165,7 @@ const EditCarPage = () => {
         formDataToSend.append(`images`, file);
       });
 
-      const response = await fetch(`http://localhost:5000/api/listings/${carId}`, {
+      const response = await fetch(`https://autonexa-server.vercel.app/api/listings/${carId}`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,

@@ -15,7 +15,7 @@ export default function ListingDetail() {
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/listings/${params.id}`);
+        const res = await fetch(`https://autonexa.vercel.app/api/listings/${params.id}`);
         if (!res.ok) throw new Error("Failed to fetch listing");
         const data = await res.json();
         setListing(data);

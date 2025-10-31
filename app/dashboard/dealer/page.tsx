@@ -58,7 +58,7 @@ const DealerDashboard = () => {
   const fetchListingsCount = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/listings/me", {
+      const response = await fetch("https://autonexa-server.vercel.app/api/listings/me", {
         headers: {
           "Authorization": `Bearer ${token}`,
         },
@@ -82,7 +82,7 @@ const DealerDashboard = () => {
   const fetchDashboardData = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/dashboard", {
+      const response = await fetch("https://autonexa-server.vercel.app/api/dashboard", {
         headers: {
           "Authorization": `Bearer ${token}`,
         },
