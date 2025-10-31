@@ -38,8 +38,8 @@ const ShowroomForm = ({ showroom, onSuccess, onError }) => {
       const token = localStorage.getItem("token");
       const method = showroom ? "PUT" : "POST";
       const url = showroom
-        ? `https://autonexa.vercel.app/api/showrooms/${showroom._id}`
-        : "https://autonexa.vercel.app/api/showrooms";
+        ? `https://autonexa-server.vercel.app/api/showrooms/${showroom._id}`
+        : "https://autonexa-server.vercel.app/api/showrooms";
 
       const res = await fetch(url, {
         method: method,

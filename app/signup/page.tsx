@@ -26,7 +26,7 @@ const SignupForm = () => {
       return;
     }
     try {
-      const res = await fetch("https://autonexa.vercel.app/api/auth/register", {
+      const res = await fetch("https://autonexa-server.vercel.app/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
