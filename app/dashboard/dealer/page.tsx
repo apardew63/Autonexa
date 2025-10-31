@@ -1,75 +1,383 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  FiPlus,
+  FiTruck,
+  FiSettings,
+  FiHome,
+  FiLogOut,
+  FiTrendingUp,
+  FiUsers,
+  FiDollarSign,
+  FiStar,
+  FiX,
+  FiUser,
+  FiMail,
+  FiPhone,
+  FiMapPin
+} from "react-icons/fi";
 import CarListingForm from "../../../components/CarListingForm";
 
 const DealerDashboard = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showroomModal, setShowroomModal] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [showroom, setShowroom] = useState<any>(null);
+  const [stats, setStats] = useState({
+    totalListings: 0,
+    activeListings: 0,
+    totalViews: 0,
+    totalRevenue: 0
+  });
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
+
+    if (!token || !userData) {
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      fetchDashboardData();
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      router.push("/login");
+    }
+  }, [router]);
+
+  const fetchDashboardData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/dashboard", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      if (data.showroom) {
+        setShowroom(data.showroom);
+      }
+      if (data.stats) {
+        setStats(data.stats);
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    toast.success("Logged out successfully!");
+    setTimeout(() => router.push("/login"), 1000);
+  };
+
+  const handleCarListingSuccess = () => {
+    setShowModal(false);
+    toast.success("Car listed successfully!");
+    fetchDashboardData();
+  };
+
+  const handleCarListingError = (error: any) => {
+    toast.error(error.message || "Failed to list car");
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto">
-        <header className="bg-white p-4 shadow-md rounded-lg mb-6">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">🏢 Dealer Dashboard</h1>
-            <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Logout</button>
-          </div>
-        </header>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
 
-        <div className="bg-white p-6 shadow-md rounded-lg mb-6">
-          <h2 className="text-xl font-semibold mb-4">🏢 Showroom Info</h2>
-          <p className="text-gray-600">Name: Your Showroom Name</p>
-          <p className="text-gray-600">Address: Your Address</p>
-          <p className="text-gray-600">Stats: Total Cars: 10, Active Listings: 8</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white p-6 shadow-md rounded-lg">
-            <h2 className="text-xl font-semibold mb-4">➕ Add New Car</h2>
-            <p className="text-gray-600 mb-4">Post a new car to your showroom</p>
+      {/* Header */}
+      <header className="bg-white shadow-lg border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <div className="flex items-center space-x-4">
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-3 rounded-xl">
+                <FiHome className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-slate-900">Dealer Dashboard</h1>
+                <p className="text-sm text-slate-600">Welcome back, {user?.name}</p>
+              </div>
+            </div>
             <button
-              onClick={() => setShowModal(true)}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              onClick={handleLogout}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
             >
-              Add Car
+              <FiLogOut className="h-4 w-4 mr-2" />
+              Logout
             </button>
           </div>
+        </div>
+      </header>
 
-          <div className="bg-white p-6 shadow-md rounded-lg">
-            <h2 className="text-xl font-semibold mb-4">🚘 My Cars</h2>
-            <p className="text-gray-600 mb-4">Edit or delete your cars</p>
-            <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Manage Cars</button>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="flex items-center">
+              <div className="bg-blue-100 p-3 rounded-lg">
+                <FiTruck className="h-6 w-6 text-blue-600" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-slate-600">Total Listings</p>
+                <p className="text-2xl font-bold text-slate-900">{stats.totalListings}</p>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-white p-6 shadow-md rounded-lg">
-            <h2 className="text-xl font-semibold mb-4">🏠 Edit Showroom Info</h2>
-            <p className="text-gray-600 mb-4">Update showroom details</p>
-            <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Edit Info</button>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="flex items-center">
+              <div className="bg-green-100 p-3 rounded-lg">
+                <FiTrendingUp className="h-6 w-6 text-green-600" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-slate-600">Active Listings</p>
+                <p className="text-2xl font-bold text-slate-900">{stats.activeListings}</p>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-white p-6 shadow-md rounded-lg">
-            <h2 className="text-xl font-semibold mb-4">⚙️ Profile Settings</h2>
-            <p className="text-gray-600 mb-4">Update your profile information</p>
-            <button className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Settings</button>
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="flex items-center">
+              <div className="bg-purple-100 p-3 rounded-lg">
+                <FiUsers className="h-6 w-6 text-purple-600" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-slate-600">Total Views</p>
+                <p className="text-2xl font-bold text-slate-900">{stats.totalViews}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="flex items-center">
+              <div className="bg-emerald-100 p-3 rounded-lg">
+                <FiDollarSign className="h-6 w-6 text-emerald-600" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-slate-600">Revenue</p>
+                <p className="text-2xl font-bold text-slate-900">${stats.totalRevenue}</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Add New Car</h2>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="text-gray-500 hover:text-gray-700 text-2xl"
-                >
-                  ×
-                </button>
+        {/* Showroom Info */}
+        {showroom && (
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-slate-900 flex items-center">
+                <FiHome className="h-5 w-5 mr-2 text-blue-600" />
+                Showroom Information
+              </h2>
+              <button
+                onClick={() => setShowroomModal(true)}
+                className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+              >
+                Edit Details
+              </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="flex items-center space-x-3">
+                <FiUser className="h-5 w-5 text-slate-400" />
+                <div>
+                  <p className="text-sm text-slate-600">Showroom Name</p>
+                  <p className="font-medium text-slate-900">{showroom.showroomName}</p>
+                </div>
               </div>
-              <CarListingForm userId="dealer-id-placeholder" showroomId="showroom-id-placeholder" />
+              <div className="flex items-center space-x-3">
+                <FiMail className="h-5 w-5 text-slate-400" />
+                <div>
+                  <p className="text-sm text-slate-600">Email</p>
+                  <p className="font-medium text-slate-900">{showroom.email}</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <FiPhone className="h-5 w-5 text-slate-400" />
+                <div>
+                  <p className="text-sm text-slate-600">Phone</p>
+                  <p className="font-medium text-slate-900">{showroom.phone}</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3 md:col-span-2 lg:col-span-3">
+                <FiMapPin className="h-5 w-5 text-slate-400" />
+                <div>
+                  <p className="text-sm text-slate-600">Address</p>
+                  <p className="font-medium text-slate-900">{showroom.address}, {showroom.city}</p>
+                </div>
+              </div>
             </div>
           </div>
         )}
+
+        {/* Action Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-blue-100 p-3 rounded-lg">
+                <FiPlus className="h-6 w-6 text-blue-600" />
+              </div>
+              <FiStar className="h-5 w-5 text-yellow-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Add New Car</h3>
+            <p className="text-slate-600 text-sm mb-4">List a new vehicle in your showroom inventory</p>
+            <button
+              onClick={() => setShowModal(true)}
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+            >
+              Add Car Listing
+            </button>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-green-100 p-3 rounded-lg">
+                <FiTruck className="h-6 w-6 text-green-600" />
+              </div>
+              <FiStar className="h-5 w-5 text-yellow-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Manage Inventory</h3>
+            <p className="text-slate-600 text-sm mb-4">View, edit, and manage your car listings</p>
+            <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200">
+              Manage Cars
+            </button>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-purple-100 p-3 rounded-lg">
+                <FiHome className="h-6 w-6 text-purple-600" />
+              </div>
+              <FiStar className="h-5 w-5 text-yellow-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Showroom Settings</h3>
+            <p className="text-slate-600 text-sm mb-4">Update your showroom information and preferences</p>
+            <button
+              onClick={() => setShowroomModal(true)}
+              className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors duration-200"
+            >
+              Edit Showroom
+            </button>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-slate-100 p-3 rounded-lg">
+                <FiSettings className="h-6 w-6 text-slate-600" />
+              </div>
+              <FiStar className="h-5 w-5 text-yellow-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Account Settings</h3>
+            <p className="text-slate-600 text-sm mb-4">Manage your profile and account preferences</p>
+            <button className="w-full bg-slate-600 text-white py-2 px-4 rounded-lg hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors duration-200">
+              Account Settings
+            </button>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-indigo-100 p-3 rounded-lg">
+                <FiTrendingUp className="h-6 w-6 text-indigo-600" />
+              </div>
+              <FiStar className="h-5 w-5 text-yellow-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Analytics</h3>
+            <p className="text-slate-600 text-sm mb-4">View detailed insights and performance metrics</p>
+            <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200">
+              View Analytics
+            </button>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="bg-orange-100 p-3 rounded-lg">
+                <FiUsers className="h-6 w-6 text-orange-600" />
+              </div>
+              <FiStar className="h-5 w-5 text-yellow-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Customer Support</h3>
+            <p className="text-slate-600 text-sm mb-4">Get help and support for your account</p>
+            <button className="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors duration-200">
+              Contact Support
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* Add Car Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-slate-200">
+              <h2 className="text-xl font-semibold text-slate-900 flex items-center">
+                <FiPlus className="h-5 w-5 mr-2 text-blue-600" />
+                Add New Car Listing
+              </h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <FiX className="h-6 w-6" />
+              </button>
+            </div>
+            <div className="p-6">
+              <CarListingForm
+                userId={user?._id || ""}
+                onSuccess={handleCarListingSuccess}
+                onError={handleCarListingError}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Showroom Edit Modal */}
+      {showroomModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-6 border-b border-slate-200">
+              <h2 className="text-xl font-semibold text-slate-900 flex items-center">
+                <FiHome className="h-5 w-5 mr-2 text-purple-600" />
+                Edit Showroom Information
+              </h2>
+              <button
+                onClick={() => setShowroomModal(false)}
+                className="text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <FiX className="h-6 w-6" />
+              </button>
+            </div>
+            <div className="p-6">
+              <p className="text-slate-600 mb-4">Showroom editing form will be implemented here.</p>
+              <button
+                onClick={() => setShowroomModal(false)}
+                className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -24,7 +24,11 @@ const LoginForm = () => {
       });
       const data = await res.json();
       console.log("Login:", data);
-      if (data.user) {
+      if (data.token && data.user) {
+        // Store the token in localStorage
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
         if (data.user.role === "dealer") {
           router.push("/dashboard/dealer");
         } else {
