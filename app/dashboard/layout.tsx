@@ -54,7 +54,7 @@ export default function DashboardLayout({
       console.error("Error parsing user data:", error);
       router.push("/login");
     }
-  }, [router]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
