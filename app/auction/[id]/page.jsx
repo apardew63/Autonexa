@@ -111,7 +111,7 @@ export default function ListingDetail() {
             {listing.images && listing.images.length > 0 ? (
               <>
                 <img
-                  src={`http://localhost:5000${listing.images[currentImageIndex]}`}
+                  src={`https://autonexa-server.vercel.app${listing.images[currentImageIndex]}`}
                   alt={`${listing.title} - Image ${currentImageIndex + 1}`}
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                 />
@@ -167,7 +167,7 @@ export default function ListingDetail() {
                   }`}
                 >
                   <img
-                    src={`http://localhost:5000${image}`}
+                    src={`https://autonexa-server.vercel.app${image}`}
                     alt={`${listing.title} - Thumbnail ${index + 1}`}
                     className="w-full h-full object-cover"
                   />

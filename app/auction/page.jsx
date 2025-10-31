@@ -61,7 +61,7 @@ export default function AllListings() {
                 <img
                   src={
                     listing.images?.[0]
-                      ? `http://localhost:5000${listing.images[0]}`
+                      ? `https://autonexa-server.vercel.app${listing.images[0]}`
                       : "/placeholder.jpg"
                   }
                   alt={listing.title}
