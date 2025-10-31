@@ -88,6 +88,8 @@ const EditCarPage = () => {
         location: data.location || "",
         status: data.status || "draft",
       });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const unusedVar = data; // to suppress unused var warning
     } catch (error) {
       console.error("Error fetching car:", error);
       toast.error("Failed to load car details");

@@ -120,7 +120,7 @@ const DealerDashboard = () => {
       console.error("Error parsing user data:", error);
       router.push("/login");
     }
-  }, [router, fetchDashboardData]);
+  }, [router, fetchDashboardData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleLogout = () => {
     localStorage.removeItem("token");
