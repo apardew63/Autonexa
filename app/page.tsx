@@ -10,9 +10,13 @@ import CounterSection from '../components/CounterSection'
 import Button from "../components/Button";
 import { FiArrowRight } from "react-icons/fi";
 import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function Page() {
   return (
+    <>
+    <Header />
     <div>
       <div
         className="relative"
@@ -83,5 +87,7 @@ export default function Page() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }

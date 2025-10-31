@@ -88,6 +88,13 @@ export default function Header() {
               >
                 Contact
               </Link>
+              <Link
+                href="/contact"
+                className="text-white hover:text-yellow-400 transition-colors text-lg font-medium py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
+              </Link>
               <div className="border-t border-white/20 pt-4 mt-4">
                 <a
                   href="/login"

@@ -4,14 +4,14 @@ import { Lato, Montserrat } from 'next/font/google';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const lato = Lato({ 
-  subsets: ['latin'], 
+const lato = Lato({
+  subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-lato' // Add variable for CSS custom property
 });
 
-const montserrat = Montserrat({ 
-  subsets: ['latin'], 
+const montserrat = Montserrat({
+  subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-montserrat'
 });
@@ -29,11 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lato.variable} ${montserrat.variable} antialiased font-lato`}>
-        <Header />
         <main>
           {children}
         </main>
-        <Footer />
       </body>
     </html>
   );

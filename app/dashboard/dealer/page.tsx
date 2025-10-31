@@ -20,6 +20,7 @@ import {
   FiMapPin
 } from "react-icons/fi";
 import CarListingForm from "../../../components/CarListingForm";
+import ShowroomForm from "../../../components/ShowroomForm";
 
 const DealerDashboard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -62,14 +63,42 @@ const DealerDashboard = () => {
         },
       });
       const data = await response.json();
+      console.log("Dashboard data:", data); // Debug log
       if (data.showroom) {
         setShowroom(data.showroom);
       }
       if (data.stats) {
         setStats(data.stats);
+      } else {
+        // Fallback: fetch listings directly if stats not provided
+        fetchListingsCount();
       }
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
+    }
+  };
+
+  const fetchListingsCount = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/listings/me", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const listings = await response.json();
+        const activeListings = listings.filter((car: any) => car.status === 'active').length;
+        setStats(prev => ({
+          ...prev,
+          totalListings: listings.length,
+          activeListings: activeListings
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching listings count:", error);
     }
   };
 
@@ -84,6 +113,10 @@ const DealerDashboard = () => {
     setShowModal(false);
     toast.success("Car listed successfully!");
     fetchDashboardData();
+  };
+
+  const handleManageCarsClick = () => {
+    router.push('/dashboard/manage-cars');
   };
 
   const handleCarListingError = (error: any) => {
@@ -257,7 +290,10 @@ const DealerDashboard = () => {
             </div>
             <h3 className="text-lg font-semibold text-slate-900 mb-2">Manage Inventory</h3>
             <p className="text-slate-600 text-sm mb-4">View, edit, and manage your car listings</p>
-            <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200">
+            <button
+              onClick={handleManageCarsClick}
+              className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200"
+            >
               Manage Cars
             </button>
           </div>
@@ -288,7 +324,10 @@ const DealerDashboard = () => {
             </div>
             <h3 className="text-lg font-semibold text-slate-900 mb-2">Account Settings</h3>
             <p className="text-slate-600 text-sm mb-4">Manage your profile and account preferences</p>
-            <button className="w-full bg-slate-600 text-white py-2 px-4 rounded-lg hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors duration-200">
+            <button
+              onClick={() => router.push('/dashboard/account-settings')}
+              className="w-full bg-slate-600 text-white py-2 px-4 rounded-lg hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors duration-200"
+            >
               Account Settings
             </button>
           </div>
@@ -367,13 +406,17 @@ const DealerDashboard = () => {
               </button>
             </div>
             <div className="p-6">
-              <p className="text-slate-600 mb-4">Showroom editing form will be implemented here.</p>
-              <button
-                onClick={() => setShowroomModal(false)}
-                className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors duration-200"
-              >
-                Close
-              </button>
+              <ShowroomForm
+                showroom={showroom}
+                onSuccess={() => {
+                  setShowroomModal(false);
+                  fetchDashboardData();
+                  toast.success("Showroom updated successfully!");
+                }}
+                onError={(error) => {
+                  toast.error(error.message || "Failed to update showroom");
+                }}
+              />
             </div>
           </div>
         </div>
