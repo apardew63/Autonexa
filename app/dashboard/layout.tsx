@@ -74,14 +74,14 @@ export default function DashboardLayout({
         ...baseNavigation,
         { name: "Add Car", href: "/dashboard/add-car", icon: FiPlus },
         { name: "Manage Cars", href: "/dashboard/manage-cars", icon: FiList },
-        { name: "Analytics", href: "/dashboard/analytics", icon: FiBarChart },
+        { name: "Analytics", href: "#", icon: FiBarChart },
         { name: "Account Settings", href: "/dashboard/account-settings", icon: FiSettings },
       ];
     } else {
       return [
         { name: "Dashboard", href: "/dashboard/user", icon: FiHome },
         ...baseNavigation,
-        { name: "Add Car", href: "/dashboard/add-car", icon: FiPlus },
+        { name: "Add Car", href: "#", icon: FiPlus },
         { name: "Manage Cars", href: "/dashboard/manage-cars", icon: FiList },
         { name: "Account Settings", href: "/dashboard/account-settings", icon: FiSettings },
       ];
