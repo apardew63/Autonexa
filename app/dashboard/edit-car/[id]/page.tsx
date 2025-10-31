@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -54,16 +54,7 @@ const EditCarPage = () => {
     status: "draft" as "active" | "draft",
   });
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/login");
-      return;
-    }
-    fetchCar();
-  }, [router, carId]);
-
-  const fetchCar = async () => {
+  const fetchCar = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`http://localhost:5000/api/listings/${carId}`, {
@@ -104,7 +95,16 @@ const EditCarPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [carId, router]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+    fetchCar();
+  }, [router, fetchCar]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

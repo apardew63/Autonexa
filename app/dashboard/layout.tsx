@@ -14,13 +14,19 @@ import {
   FiHeart
 } from "react-icons/fi";
 
+interface User {
+  name?: string;
+  email?: string;
+  role?: string;
+}
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 

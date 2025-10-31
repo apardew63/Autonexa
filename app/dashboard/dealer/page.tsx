@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,11 +22,31 @@ import {
 import CarListingForm from "../../../components/CarListingForm";
 import ShowroomForm from "../../../components/ShowroomForm";
 
+interface User {
+  _id: string;
+  name: string;
+  email?: string;
+  role?: string;
+}
+
+interface Showroom {
+  showroomName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+}
+
+interface Car {
+  _id: string;
+  status: string;
+}
+
 const DealerDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [showroomModal, setShowroomModal] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [showroom, setShowroom] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [showroom, setShowroom] = useState<Showroom | null>(null);
   const [stats, setStats] = useState({
     totalListings: 0,
     activeListings: 0,
@@ -35,26 +55,31 @@ const DealerDashboard = () => {
   });
   const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("user");
-
-    if (!token || !userData) {
-      router.push("/login");
-      return;
-    }
-
+  const fetchListingsCount = useCallback(async () => {
     try {
-      const parsedUser = JSON.parse(userData);
-      setUser(parsedUser);
-      fetchDashboardData();
-    } catch (error) {
-      console.error("Error parsing user data:", error);
-      router.push("/login");
-    }
-  }, [router]);
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:5000/api/listings/me", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
 
-  const fetchDashboardData = async () => {
+      if (response.ok) {
+        const listings: Car[] = await response.json();
+        const activeListings = listings.filter((car) => car.status === 'active').length;
+        setStats(prev => ({
+          ...prev,
+          totalListings: listings.length,
+          activeListings: activeListings
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching listings count:", error);
+    }
+  }, []);
+
+  const fetchDashboardData = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch("http://localhost:5000/api/dashboard", {
@@ -76,31 +101,26 @@ const DealerDashboard = () => {
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     }
-  };
+  }, [fetchListingsCount]);
 
-  const fetchListingsCount = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/listings/me", {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
-        credentials: "include",
-      });
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
 
-      if (response.ok) {
-        const listings = await response.json();
-        const activeListings = listings.filter((car: any) => car.status === 'active').length;
-        setStats(prev => ({
-          ...prev,
-          totalListings: listings.length,
-          activeListings: activeListings
-        }));
-      }
-    } catch (error) {
-      console.error("Error fetching listings count:", error);
+    if (!token || !userData) {
+      router.push("/login");
+      return;
     }
-  };
+
+    try {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      fetchDashboardData();
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      router.push("/login");
+    }
+  }, [router, fetchDashboardData]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -119,7 +139,7 @@ const DealerDashboard = () => {
     router.push('/dashboard/manage-cars');
   };
 
-  const handleCarListingError = (error: any) => {
+  const handleCarListingError = (error: { message?: string }) => {
     toast.error(error.message || "Failed to list car");
   };
 
