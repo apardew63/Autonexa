@@ -94,7 +94,7 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-gray-50 z-50">
       <div className="flex z-50">
         {/* Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
+        <div className={`fixed inset-y-0 left-0 z-50 w-[100px] bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
           <div className="flex items-center justify-center h-16 px-4 bg-blue-600">
             <h1 className="text-xl font-bold text-white">AutoNexa</h1>
           </div>
