@@ -43,7 +43,6 @@ interface Car {
 }
 
 const DealerDashboard = () => {
-  const [showModal, setShowModal] = useState(false);
   const [showroomModal, setShowroomModal] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showroom, setShowroom] = useState<Showroom | null>(null);
@@ -130,7 +129,6 @@ const DealerDashboard = () => {
   };
 
   const handleCarListingSuccess = () => {
-    setShowModal(false);
     toast.success("Car listed successfully!");
     fetchDashboardData();
   };
@@ -294,7 +292,7 @@ const DealerDashboard = () => {
             <h3 className="text-lg font-semibold text-slate-900 mb-2">Add New Car</h3>
             <p className="text-slate-600 text-sm mb-4">List a new vehicle in your showroom inventory</p>
             <button
-              onClick={() => setShowModal(true)}
+              onClick={() => router.push('/dashboard/add-car')}
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
             >
               Add Car Listing
@@ -382,32 +380,6 @@ const DealerDashboard = () => {
         </div>
       </div>
 
-      {/* Add Car Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-6 border-b border-slate-200">
-              <h2 className="text-xl font-semibold text-slate-900 flex items-center">
-                <FiPlus className="h-5 w-5 mr-2 text-blue-600" />
-                Add New Car Listing
-              </h2>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-slate-400 hover:text-slate-600 transition-colors"
-              >
-                <FiX className="h-6 w-6" />
-              </button>
-            </div>
-            <div className="p-6">
-              <CarListingForm
-                userId={user?._id || ""}
-                onSuccess={handleCarListingSuccess}
-                onError={handleCarListingError}
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Showroom Edit Modal */}
       {showroomModal && (

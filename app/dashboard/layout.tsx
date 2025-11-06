@@ -1,7 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext, useContext } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+
+const ModalContext = createContext<{ showModal: boolean; setShowModal: (show: boolean) => void } | null>(null);
+
+export const useModal = () => {
+  const context = useContext(ModalContext);
+  if (!context) {
+    throw new Error("useModal must be used within a ModalProvider");
+  }
+  return context;
+};
 import {
   FiHome,
   FiPlus,
@@ -11,10 +21,15 @@ import {
   FiLogOut,
   FiMenu,
   FiBarChart,
-  FiHeart
+  FiHeart,
+  FiX
 } from "react-icons/fi";
+import CarListingForm from "../../components/CarListingForm";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface User {
+  _id?: string;
   name?: string;
   email?: string;
   role?: string;
@@ -27,6 +42,7 @@ export default function DashboardLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -91,10 +107,23 @@ export default function DashboardLayout({
   const navigation = getNavigation(user?.role || "");
 
   return (
-    <div className="min-h-screen bg-gray-50 z-50">
-      <div className="flex z-50">
+    <ModalContext.Provider value={{ showModal, setShowModal }}>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <div className="min-h-screen bg-gray-50 z-50">
+        <div className="flex z-50">
         {/* Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-[100px] bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
+        <div className={`fixed inset-y-0 left-0 z-50 w-[300px] bg-white shadow-lg transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
           <div className="flex items-center justify-center h-16 px-4 bg-blue-600">
             <h1 className="text-xl font-bold text-white">AutoNexa</h1>
           </div>
@@ -104,19 +133,30 @@ export default function DashboardLayout({
               {navigation.map((item) => {
                 const isActive = pathname === item.href;
                 return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
-                      isActive
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                    onClick={() => setSidebarOpen(false)}
-                  >
-                    <item.icon className="mr-3 h-5 w-5" />
-                    {item.name}
-                  </Link>
+                  item.name === "Add Car" ? (
+                    <button
+                      key={item.name}
+                      onClick={() => setShowModal(true)}
+                      className="flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:bg-gray-100"
+                    >
+                      <item.icon className="mr-3 h-5 w-5" />
+                      {item.name}
+                    </button>
+                  ) : (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors ${
+                        isActive
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                      onClick={() => setSidebarOpen(false)}
+                    >
+                      <item.icon className="mr-3 h-5 w-5" />
+                      {item.name}
+                    </Link>
+                  )
                 );
               })}
             </div>
@@ -174,7 +214,41 @@ export default function DashboardLayout({
             onClick={() => setSidebarOpen(false)}
           />
         )}
+
+        {/* Add Car Modal */}
+        {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between p-6 border-b border-slate-200">
+                <h2 className="text-xl font-semibold text-slate-900 flex items-center">
+                  <FiPlus className="h-5 w-5 mr-2 text-blue-600" />
+                  Add New Car Listing
+                </h2>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <FiX className="h-6 w-6" />
+                </button>
+              </div>
+              <div className="p-6">
+                <CarListingForm
+                  userId={user?._id || ""}
+                  onSuccess={() => {
+                    setShowModal(false);
+                    toast.success("Car listed successfully!");
+                    // Refresh data if needed
+                  }}
+                  onError={(error: { message?: string }) => {
+                    toast.error(error.message || "Failed to list car");
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        </div>
       </div>
-    </div>
+    </ModalContext.Provider>
   );
 }
