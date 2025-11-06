@@ -1,17 +1,7 @@
 "use client";
-import { useEffect, useState, createContext, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-
-const ModalContext = createContext<{ showModal: boolean; setShowModal: (show: boolean) => void } | null>(null);
-
-export const useModal = () => {
-  const context = useContext(ModalContext);
-  if (!context) {
-    throw new Error("useModal must be used within a ModalProvider");
-  }
-  return context;
-};
 import {
   FiHome,
   FiPlus,
@@ -107,7 +97,7 @@ export default function DashboardLayout({
   const navigation = getNavigation(user?.role || "");
 
   return (
-    <ModalContext.Provider value={{ showModal, setShowModal }}>
+    <>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -249,6 +239,6 @@ export default function DashboardLayout({
         )}
         </div>
       </div>
-    </ModalContext.Provider>
+    </>
   );
 }
