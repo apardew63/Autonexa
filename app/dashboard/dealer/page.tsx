@@ -160,7 +160,7 @@ const DealerDashboard = () => {
 
       {/* Header */}
       <header className="bg-white shadow-lg border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
               <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-3 rounded-xl">

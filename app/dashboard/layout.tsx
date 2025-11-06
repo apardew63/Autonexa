@@ -149,7 +149,7 @@ export default function DashboardLayout({
           </nav>
         </div>
 
-        <div className="flex-1 lg:ml-64 z-50 bg-red-400">
+        <div className="flex-1 lg:ml-64 z-50">
           <header className="bg-white shadow-sm border-b border-gray-200 lg:hidden">
             <div className="flex items-center justify-between h-16 px-4">
               <button
