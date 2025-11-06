@@ -4,21 +4,21 @@ import Button from "../components/Button";
 import { FiArrowRight } from "react-icons/fi";
 
 export default function Hero() {
- const targetDate = new Date("2025-11-01T18:00:00"); // for example
+ const targetDate = new Date("2025-11-07T18:00:00"); // for example
 
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(targetDate));
 
   // Helper to format remaining time
   function getTimeLeft(target) {
     const total = target - new Date();
-    if (total <= 0) return { days: 0, hours: 0, minutes: 0, };
+    if (total <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
 
     const days = Math.floor(total / (1000 * 60 * 60 * 24));
     const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((total / (1000 * 60)) % 60);
-    // const seconds = Math.floor((total / 1000) % 60);
+    const seconds = Math.floor((total / 1000) % 60);
 
-    return { days, hours, minutes };
+    return { days, hours, minutes, seconds };
   }
 
   // Update countdown every second
@@ -31,13 +31,16 @@ export default function Hero() {
   }, [targetDate]);
 
    const formatTime = () => {
-    const { days, hours, minutes } = timeLeft;
-    if (days > 0)
-      return `${days}:${hours}:${minutes}`;
-    if (hours > 0)
-      return `${hours} ${minutes}`;
-    return `${minutes}`;
-  };
+     const { days, hours, minutes, seconds } = timeLeft;
+     const pad = (num) => num.toString().padStart(2, '0');
+     if (days > 0)
+       return `${days}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+     if (hours > 0)
+       return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+     if (minutes > 0)
+       return `${pad(minutes)}:${pad(seconds)}`;
+     return `00:00`;
+   };
 
   return (
     <section className="relative min-h-[500px] sm:min-h-[600px] md:min-h-[700px] lg:h-[880px] flex items-center">
@@ -68,7 +71,7 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-[10px] rounded-md border border-white/30 bg-white/10 backdrop-blur-md p-2 md:px-6 w-full max-w-4xl">
             {/* Info Columns */}
             <div className="flex flex-col sm:flex-row flex-wrap justify-center md:justify-start text-center md:text-left w-full sm:w-auto">
-              <div className="flex flex-col sm:p-2 border-b sm:border-b-0 sm:border-r border-white/30 w-full sm:w-auto">
+              <div className="flex flex-col sm:px-2 border-b sm:border-b-0 sm:border-r border-white/30 w-full sm:w-auto">
                 <span className="text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-normal text-white">
                   Brand
                 </span>
@@ -77,7 +80,7 @@ export default function Hero() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:p-2 border-b sm:border-b-0 sm:border-r border-white/30 w-full sm:w-auto">
+              <div className="flex flex-col sm:px-2 border-b sm:border-b-0 sm:border-r border-white/30 w-full sm:w-auto">
                 <span className="text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-normal text-white">
                   Model
                 </span>
@@ -86,7 +89,7 @@ export default function Hero() {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:p-2 w-full sm:w-auto">
+              <div className="flex flex-col sm:px-2 w-full sm:w-auto">
                 <span className="text-[12px] sm:text-[14px] md:text-[16px] lg:text-[18px] font-normal text-white">
                   Year
                 </span>
