@@ -122,7 +122,7 @@ export default function Hero() {
               Next Auction starts in
             </div>
             <div className="text-[24px] sm:text-[32px] md:text-[48px] lg:text-[64px] font-semibold text-white tracking-[4px] sm:tracking-[8px] md:tracking-[12px]">
-              {formatTime()}
+              14:55:22
             </div>
           </div>
 
