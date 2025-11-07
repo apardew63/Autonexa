@@ -46,7 +46,7 @@ export default function DashboardLayout({
     }
 
     try {
-      const parsedUser = JSON.parse(userData);
+      const parsedUser = JSON.parse(userData);    
       setUser(parsedUser);
 
       // Redirect based on user role
